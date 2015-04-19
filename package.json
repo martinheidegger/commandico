@@ -2,7 +2,7 @@
   "name": "commandico",
   "version": "1.0.1",
   "description": "A small tool to write command line application that suits my needs",
-  "main": "index.js",
+  "main": "commandico.js",
   "scripts": {
     "test": "lab -L -c"
   },
