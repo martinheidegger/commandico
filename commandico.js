@@ -28,6 +28,17 @@ var command = joi.object({
         cmd.aliases.push(name);
         return cmd;
       });
+    },
+    orderSort = function orderSort(a, b) {
+      var orderA = a.order || 0,
+          orderB = b.order || 0;
+
+      if (orderA > orderB) {
+        return 1;
+      } else if (orderA < orderB) {
+        return -1;
+      }
+      return 0;
     };
 
 var Commandico = explicit({
@@ -89,8 +100,9 @@ Commandico.prototype = explicit({
       if (name === null || name === undefined) {
         return null;
       }
-      for (var i = this.commands.length - 1; i >= 0; i--) {
-        var command = this.commands[i];
+      var commands = this.commands.sort(orderSort);
+      for (var i = commands.length - 1; i >= 0; i--) {
+        var command = commands[i];
         if (!itemFilter(this.scope, command)) {
           continue;
         }
@@ -108,9 +120,9 @@ Commandico.prototype = explicit({
       var mode = args[0];
       var argv = minimist(args)
         , command = this.getCommand(mode) || this.getCommand(this.defaultCommand)
-        , handled = false;
-
-      this.modifiers
+        , handled = false
+        , modifiers = this.modifiers.sort(orderSort);
+      modifiers
         .filter(itemFilter.bind(null, this.scope))
         .forEach(function (item) {
           for (var i = 0; i < item.aliases.length; ++i) {

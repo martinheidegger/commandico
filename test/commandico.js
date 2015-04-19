@@ -256,7 +256,7 @@ test('multi command order test', function (done) {
     .execute(['menu']);
 });
 
-test('multi command order test', function (done) {
+test('loadCommands test', function (done) {
   var command = commandico(null, 'menu')
     .loadCommands(__dirname + '/../test_cmds')
     .getCommand('menu');
@@ -265,11 +265,57 @@ test('multi command order test', function (done) {
   done();
 });
 
-test('multi command order test', function (done) {
+test('loadModifiers test', function (done) {
   var modifiers = commandico(null, 'menu')
     .loadModifiers(__dirname + '/../test_modifier')
     .modifiers;
 
   Code.expect(modifiers[0]).to.not.equal(null);
   done();
+});
+
+test('ordered multi command order test', function (done) {
+  commandico(null, 'menu')
+    .addCommands([{
+        order: 1,
+        aliases: ['menu'],
+        handler: done
+      }, {
+        aliases: ['menu'],
+        handler: function () {
+          throw new Error('?');
+        }
+      }])
+    .execute(['menu']);
+});
+
+test('add various orders', function (done) {
+  commandico(null, 'menu')
+    .addCommands([{
+        order: 2,
+        aliases: ['menu'],
+        handler: done
+      }, {
+        order: 1,
+        aliases: ['menu'],
+        handler: function () {
+          throw new Error('?');
+        }
+      }])
+    .execute(['menu']);
+});
+
+test('add various orders', function (done) {
+  commandico(null, 'menu')
+    .addCommands([{
+        aliases: ['menu'],
+        handler: function () {
+          throw new Error('?');
+        }
+      }, {
+        order: 1,
+        aliases: ['menu'],
+        handler: done
+      }])
+    .execute(['menu']);
 });
