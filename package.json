@@ -1,6 +1,6 @@
 {
   "name": "commandico",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A small tool to write command line application that suits my needs",
   "main": "commandico.js",
   "scripts": {
