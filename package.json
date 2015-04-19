@@ -1,0 +1,32 @@
+{
+  "name": "commandico",
+  "version": "1.0.0",
+  "description": "A small tool to write command line application that suits my needs",
+  "main": "index.js",
+  "scripts": {
+    "test": "lab -L -c"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:martinheidegger/commandico.git"
+  },
+  "keywords": [
+    "cli",
+    "extendable"
+  ],
+  "author": "Martin Heidegger <martin.heidegger@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/martinheidegger/commandico/issues"
+  },
+  "homepage": "https://github.com/martinheidegger/commandico",
+  "dependencies": {
+    "explicit": "^0.1.0",
+    "joi": "^6.1.2",
+    "lab": "^5.5.1",
+    "minimist": "^1.1.1"
+  },
+  "devDependencies": {
+    "code": "^1.4.0"
+  }
+}
