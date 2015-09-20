@@ -265,6 +265,29 @@ test('loadCommands test', function (done) {
   done();
 });
 
+test('ordinary modifier executuoin', function (done) {
+  var scope = {};
+  var called = 0;
+  commandico(scope, 'menu')
+    .addModifiers([{
+      aliases: ['v', 'version'],
+      handler: function (modifierScope, value, alias) {
+        Code.expect(modifierScope).to.be.equal(scope);
+        Code.expect(value).to.be.equal(2);
+        Code.expect(alias).to.be.equal('version');
+        called++;
+      }
+    }])
+    .addCommands([{
+      aliases: ['menu'],
+      handler: function () {
+        Code.expect(called).to.be.equal(1);
+        done();
+      }
+    }])
+    .execute(['menu', '--version=2']);
+});
+
 test('loadModifiers test', function (done) {
   var modifiers = commandico(null, 'menu')
     .loadModifiers(__dirname + '/../test_modifier')

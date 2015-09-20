@@ -11,7 +11,7 @@ var command = joi.object({
       handler: joi.func().required(),
       filter: joi.func().optional(),
       aliases: joi.array().min(1).items(joi.string())
-    }),
+    }).unknown(),
     commands = joi.array().items(command),
     itemFilter = function itemFilter (scope, item) {
       return typeof item.filter === 'function' ? item.filter(scope) : true;
@@ -120,16 +120,16 @@ Commandico.prototype = explicit({
       var mode = args[0];
       var argv = minimist(args)
         , command = this.getCommand(mode) || this.getCommand(this.defaultCommand)
-        , handled = false
-        , modifiers = this.modifiers.sort(orderSort);
-      modifiers
+        , handled = false;
+      this.modifiers
         .filter(itemFilter.bind(null, this.scope))
+        .sort(orderSort)
         .forEach(function (item) {
           for (var i = 0; i < item.aliases.length; ++i) {
             var alias = item.aliases[i]
               , value = argv[alias];
             if (value !== undefined && value !== null) {
-              item.handler(this, value, alias);
+              item.handler(this.scope, value, alias);
             }
           }
         }.bind(this));
