@@ -25,7 +25,7 @@ var command = joi.object({
         if (!cmd.aliases) {
           cmd.aliases = [];
         }
-        cmd.aliases.push(name);
+        cmd.aliases.unshift(name);
         return cmd;
       });
     },
