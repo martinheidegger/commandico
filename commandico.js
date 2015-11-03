@@ -138,7 +138,7 @@ Commandico.prototype = explicit({
         throw new Error('default command not found');
       }
 
-      command.handler(this.scope, argv);
+      command.handler(this.scope, argv._.slice(1));
     }
   }
 });
