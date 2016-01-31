@@ -1,5 +1,6 @@
 # Commandico
 
+[![Build Status](https://travis-ci.org/martinheidegger/commandico.svg?branch=master)](https://travis-ci.org/martinheidegger/commandico)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 
 A tiny - nodejs - command line tool that allows to cleanly create a command-line client. 
