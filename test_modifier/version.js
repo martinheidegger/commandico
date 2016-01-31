@@ -1,4 +1,4 @@
-exports.aliases = [];
+exports.aliases = []
 exports.handler = function () {
-	return;
-};
+  return
+}

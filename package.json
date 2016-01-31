@@ -4,7 +4,14 @@
   "description": "A small tool to write command line application that suits my needs",
   "main": "commandico.js",
   "scripts": {
-    "test": "mocha"
+    "lint": "standard",
+    "test": "npm run lint; mocha"
+  },
+  "standard": {
+    "globals": [
+      "describe",
+      "it"
+    ]
   },
   "repository": {
     "type": "git",

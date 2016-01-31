@@ -1,3 +1,3 @@
 exports.handler = function () {
-	return;
-};
+  return
+}
