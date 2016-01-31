@@ -10,7 +10,7 @@ add `commandico` to your package.json:
 npm i commandico --save
 ```
 
-then instanciate commadico:
+then instantiate commadico:
 
 ```JavaScript
 var commandico = require('commandico')

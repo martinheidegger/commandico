@@ -4,7 +4,7 @@
   "description": "A small tool to write command line application that suits my needs",
   "main": "commandico.js",
   "scripts": {
-    "test": "lab -L -c"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -26,8 +26,9 @@
     "minimist": "^1.1.1"
   },
   "devDependencies": {
+    "chai": "^3.5.0",
     "code": "^1.4.0",
-    "lab": "^5.5.1",
+    "mocha": "^2.4.5",
     "standard": "^5.4.1"
   }
 }
