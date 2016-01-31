@@ -94,7 +94,7 @@ Commandico.prototype = explicit({
     }
   },
   getCommand: {
-    $args: [joi.string().meta('name').allow(null).allow(undefined)],
+    $args: [joi.string().meta('name').allow(null)],
     $assert: true,
     $: function (name) {
       if (name === null || name === undefined) {
