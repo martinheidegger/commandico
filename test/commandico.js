@@ -2,6 +2,7 @@
 
 var commandico = require('..')
 var expect = require('chai').expect
+var path = require('path')
 
 describe('standard execution', function () {
   it('simplest execution', function (done) {
@@ -54,7 +55,7 @@ describe('standard execution', function () {
       .addCommands([{
         aliases: ['menu'],
         handler: function () {
-          return
+
         }
       }, {
         aliases: ['moxy'],
@@ -68,7 +69,7 @@ describe('standard execution', function () {
       .addCommands([{
         aliases: ['menu'],
         handler: function () {
-          return
+
         }
       }, {
         aliases: ['moxy'],
@@ -255,7 +256,7 @@ describe('standard execution', function () {
 
   it('loadCommands test', function (done) {
     var command = commandico(null, 'menu')
-      .loadCommands(__dirname + '/../test_cmds')
+      .loadCommands(path.join(__dirname, '/../test_cmds'))
       .getCommand('menu')
 
     expect(command).to.not.equal(null)
@@ -287,7 +288,7 @@ describe('standard execution', function () {
 
   it('loadModifiers test', function (done) {
     var modifiers = commandico(null, 'menu')
-      .loadModifiers(__dirname + '/../test_modifier')
+      .loadModifiers(path.join(__dirname, '/../test_modifier'))
       .modifiers
 
     expect(modifiers[0]).to.not.equal(null)
