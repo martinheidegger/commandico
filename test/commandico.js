@@ -288,7 +288,7 @@ describe('standard execution', function () {
 
   it('loadModifiers test', function (done) {
     var modifiers = commandico(null, 'menu')
-      .loadModifiers(path.join(__dirname, '/../test_modifier'))
+      .loadModifiers(path.normalize(`${__dirname}/../test_modifier`))
       .modifiers
 
     expect(modifiers[0]).to.not.equal(null)
