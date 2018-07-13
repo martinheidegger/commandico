@@ -256,7 +256,7 @@ describe('standard execution', function () {
 
   it('loadCommands test', function (done) {
     var command = commandico(null, 'menu')
-      .loadCommands(path.join(__dirname, '/../test_cmds'))
+      .loadCommands(path.normalize(`${__dirname}/../test_cmds`))
       .getCommand('menu')
 
     expect(command).to.not.equal(null)
