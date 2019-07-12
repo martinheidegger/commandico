@@ -28,14 +28,14 @@
   },
   "homepage": "https://github.com/martinheidegger/commandico",
   "dependencies": {
+    "@hapi/joi": "^15.1.0",
     "explicit": "^0.1.1",
-    "joi": "^13.4.0",
     "minimist": "^1.1.1"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
+    "chai": "^4.2.0",
     "code": "^5.2.0",
-    "mocha": "^5.2.0",
-    "standard": "^11.0.1"
+    "mocha": "^6.1.4",
+    "standard": "^13.0.1"
   }
 }
