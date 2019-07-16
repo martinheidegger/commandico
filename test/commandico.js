@@ -4,92 +4,88 @@ var commandico = require('..')
 var expect = require('chai').expect
 var path = require('path')
 
-describe('standard execution', function () {
-  it('simplest execution', function (done) {
+describe('standard execution', () => {
+  it('simplest execution', done =>
     commandico(null, 'menu')
       .addCommands([{
         aliases: ['menu'],
         handler: done
       }])
       .execute(['menu'])
-  })
+  )
 
-  it('fallback execution', function (done) {
+  it('fallback execution', done =>
     commandico(null, 'menu')
       .addCommands([{
         aliases: ['menu'],
         handler: done
       }])
       .execute([])
-  })
+  )
 
-  it('fallback on missing array', function (done) {
+  it('fallback on missing array', done =>
     commandico(null, 'menu')
       .addCommands([{
         aliases: ['menu'],
         handler: done
       }])
       .execute()
-  })
+  )
 
-  it('fallback on null', function (done) {
+  it('fallback on null', done =>
     commandico(null, 'menu')
       .addCommands([{
         aliases: ['menu'],
         handler: done
       }])
       .execute([null])
-  })
+  )
 
-  it('fallback on something', function (done) {
+  it('fallback on something', done =>
     commandico(null, 'menu')
       .addCommands([{
         aliases: ['menu'],
         handler: done
       }])
       .execute(['something'])
-  })
+  )
 
-  it('non default entries', function (done) {
+  it('non default entries', done =>
     commandico(null, 'menu')
       .addCommands([{
         aliases: ['menu'],
-        handler: function () {
-
-        }
+        handler () {}
       }, {
         aliases: ['moxy'],
         handler: done
       }])
       .execute(['moxy'])
-  })
+  )
 
-  it('non default entries', function (done) {
+  it('non default entries', done =>
     commandico(null, 'menu')
       .addCommands([{
         aliases: ['menu'],
-        handler: function () {
-
-        }
+        handler () {}
       }, {
         aliases: ['moxy'],
         handler: done
       }])
       .execute(['moxy'])
-  })
+  )
 
-  it('modifier execution', function (done) {
-    var v = false
+  it('modifier execution', done => {
+    let v = false
     commandico(null, 'menu')
       .addModifiers([{
         aliases: ['v'],
-        handler: function () {
+        handler () {
           v = true
         }
       }])
       .addCommands([{
         aliases: ['menu'],
-        handler: function () {
+        handler () {
           expect(v).to.equal(true)
           done()
         }
@@ -97,11 +93,11 @@ describe('standard execution', function () {
       .execute(['menu', '-v'])
   })
 
-  it('missing modifiers', function (done) {
+  it('missing modifiers', done =>
     commandico(null, 'menu')
       .addModifiers([{
         aliases: ['x'],
-        handler: function () {
+        handler () {
           throw new Error('?')
         }
       }])
@@ -110,9 +106,9 @@ describe('standard execution', function () {
         handler: done
       }])
       .execute(['menu', '-v'])
-  })
+  )
 
-  it('missing default', function (done) {
+  it('missing default', done => {
     try {
       commandico(null, 'menu')
         .execute(['menu', '-v'])
@@ -123,21 +119,19 @@ describe('standard execution', function () {
     throw new Error('No error thrown even though default was missing.')
   })
 
-  it('modifier filter=true execution', function (done) {
-    var v = false
+  it('modifier filter=true execution', done => {
+    let v = false
     commandico(null, 'menu')
       .addModifiers([{
         aliases: ['v'],
-        filter: function () {
-          return false
-        },
-        handler: function () {
+        filter: () => false,
+        handler () {
           v = true
         }
       }])
       .addCommands([{
         aliases: ['menu'],
-        handler: function () {
+        handler () {
           expect(v).to.equal(false)
           done()
         }
@@ -145,21 +139,19 @@ describe('standard execution', function () {
       .execute(['menu', '-v'])
   })
 
-  it('modifier filter=false execution', function (done) {
-    var v = false
+  it('modifier filter=false execution', done => {
+    let v = false
     commandico(null, 'menu')
       .addModifiers([{
         aliases: ['v'],
-        filter: function () {
-          return true
-        },
-        handler: function () {
+        filter: () => true,
+        handler () {
           v = true
         }
       }])
       .addCommands([{
         aliases: ['menu'],
-        handler: function () {
+        handler () {
           expect(v).to.equal(true)
           done()
         }
@@ -167,23 +159,23 @@ describe('standard execution', function () {
       .execute(['menu', '-v'])
   })
 
-  it('multiple modifiers', function (done) {
-    var v = 0
+  it('multiple modifiers', done => {
+    let v = 0
     commandico(null, 'menu')
       .addModifiers([{
         aliases: ['v'],
-        handler: function () {
+        handler () {
           v += 1
         }
       }, {
         aliases: ['v'],
-        handler: function () {
+        handler () {
           v += 1
         }
       }])
       .addCommands([{
         aliases: ['menu'],
-        handler: function () {
+        handler () {
           expect(v).to.equal(2)
           done()
         }
@@ -191,31 +183,27 @@ describe('standard execution', function () {
       .execute(['menu', '-v'])
   })
 
-  it('menu filter', function (done) {
+  it('menu filter', done =>
     commandico(null, 'menu')
       .addCommands([{
         aliases: ['menu'],
         handler: done
       }, {
         aliases: ['menu'],
-        filter: function () {
-          return false
-        },
-        handler: function () {
+        filter: () => false,
+        handler () {
           throw new Error('?')
         }
       }])
       .execute(['menu'])
-  })
+  )
 
-  it('menu filter order test', function (done) {
+  it('menu filter order test', done =>
     commandico(null, 'menu')
       .addCommands([{
         aliases: ['menu'],
-        filter: function () {
-          return false
-        },
-        handler: function () {
+        filter: () => false,
+        handler () {
           throw new Error('?')
         }
       }, {
@@ -223,13 +211,13 @@ describe('standard execution', function () {
         handler: done
       }])
       .execute(['menu'])
-  })
+  )
 
-  it('command order test', function (done) {
+  it('command order test', done =>
     commandico(null, 'menu')
       .addCommands([{
         aliases: ['menu'],
-        handler: function () {
+        handler () {
           throw new Error('?')
         }
       }, {
@@ -237,13 +225,13 @@ describe('standard execution', function () {
         handler: done
       }])
       .execute(['menu'])
-  })
+  )
 
-  it('multi command order test', function (done) {
+  it('multi command order test', done =>
     commandico(null, 'menu')
       .addCommands([{
         aliases: ['menu'],
-        handler: function () {
+        handler () {
           throw new Error('?')
         }
       }])
@@ -252,10 +240,10 @@ describe('standard execution', function () {
         handler: done
       }])
       .execute(['menu'])
-  })
+  )
 
-  it('loadCommands test', function (done) {
-    var command = commandico(null, 'menu')
+  it('loadCommands test', done => {
+    const command = commandico(null, 'menu')
       .loadCommands(path.normalize(`${__dirname}/../test_cmds`))
       .getCommand('menu')
 
@@ -263,13 +251,13 @@ describe('standard execution', function () {
     done()
   })
 
-  it('ordinary modifier executuoin', function (done) {
-    var scope = {}
-    var called = 0
+  it('ordinary modifier executuoin', done => {
+    const scope = {}
+    let called = 0
     commandico(scope, 'menu')
       .addModifiers([{
         aliases: ['v', 'version'],
-        handler: function (modifierScope, value, alias) {
+        handler (modifierScope, value, alias) {
           expect(modifierScope).to.be.equal(scope)
           expect(value).to.be.equal(2)
           expect(alias).to.be.equal('version')
@@ -278,7 +266,7 @@ describe('standard execution', function () {
       }])
       .addCommands([{
         aliases: ['menu'],
-        handler: function () {
+        handler () {
           expect(called).to.be.equal(1)
           done()
         }
@@ -286,8 +274,8 @@ describe('standard execution', function () {
       .execute(['menu', '--version=2'])
   })
 
-  it('loadModifiers test', function (done) {
-    var modifiers = commandico(null, 'menu')
+  it('loadModifiers test', done => {
+    const modifiers = commandico(null, 'menu')
       .loadModifiers(path.normalize(`${__dirname}/../test_modifier`))
       .modifiers
 
@@ -295,7 +283,7 @@ describe('standard execution', function () {
     done()
   })
 
-  it('ordered multi command order test', function (done) {
+  it('ordered multi command order test', done =>
     commandico(null, 'menu')
       .addCommands([{
         order: 1,
@@ -303,14 +291,14 @@ describe('standard execution', function () {
         handler: done
       }, {
         aliases: ['menu'],
-        handler: function () {
+        handler () {
           throw new Error('?')
         }
       }])
       .execute(['menu'])
-  })
+  )
 
-  it('add various orders', function (done) {
+  it('add various orders', done =>
     commandico(null, 'menu')
       .addCommands([{
         order: 2,
@@ -319,18 +307,18 @@ describe('standard execution', function () {
       }, {
         order: 1,
         aliases: ['menu'],
-        handler: function () {
+        handler () {
           throw new Error('?')
         }
       }])
       .execute(['menu'])
-  })
+  )
 
-  it('add various orders', function (done) {
+  it('add various orders', done =>
     commandico(null, 'menu')
       .addCommands([{
         aliases: ['menu'],
-        handler: function () {
+        handler () {
           throw new Error('?')
         }
       }, {
@@ -339,5 +327,5 @@ describe('standard execution', function () {
         handler: done
       }])
       .execute(['menu'])
-  })
+  )
 })

@@ -1,39 +1,39 @@
 'use strict'
 
-var explicit = require('explicit')
-var joi = require('@hapi/joi')
+const explicit = require('explicit')
+const joi = require('@hapi/joi')
 
-var command = joi.object({
+const command = joi.object({
   order: joi.number().integer().default(0).optional(),
   handler: joi.func().required(),
   filter: joi.func().optional(),
   aliases: joi.array().min(1).items(joi.string())
 }).unknown()
 
-var commands = joi.array().items(command)
+const commands = joi.array().items(command)
 
-var itemFilter = function itemFilter (scope, item) {
-  return typeof item.filter === 'function' ? item.filter(scope) : true
-}
+const itemFilter = (scope, item) => typeof item.filter === 'function' ? item.filter(scope) : true
 
-var loadFromFolder = function loadFromFolder (folder) {
+const loadFromFolder = (folder) => {
   var path = require('path')
   var fs = require('fs')
-  return fs.readdirSync(folder).filter(function (file) {
-    return path.extname(file) === '.js'
-  }).map(function (file) {
-    var name = file.substr(0, file.length - '.js'.length)
-    var cmd = require(path.join(folder, name))
-    if (!cmd.aliases) {
-      cmd.aliases = []
-    }
-    cmd.aliases.unshift(name)
-    return cmd
-  })
+  return fs
+    .readdirSync(folder)
+    .filter(file => path.extname(file) === '.js')
+    .map(file => {
+      var name = file.substr(0, file.length - '.js'.length)
+      var cmd = require(path.join(folder, name))
+      if (!cmd.aliases) {
+        cmd.aliases = []
+      }
+      cmd.aliases.unshift(name)
+      return cmd
+    })
 }
-var orderSort = function orderSort (a, b) {
-  var orderA = a.order || 0
-  var orderB = b.order || 0
+
+const orderSort = (a, b) => {
+  const orderA = a.order || 0
+  const orderB = b.order || 0
 
   if (orderA > orderB) {
     return 1
@@ -44,7 +44,7 @@ var orderSort = function orderSort (a, b) {
   return 0
 }
 
-var Commandico = explicit({
+const Commandico = explicit({
   $one: true,
   $args: [
     joi.any().meta('scope'),
@@ -73,9 +73,9 @@ Commandico.prototype = explicit({
     $args: [commands.meta('commands')],
     $assert: true,
     $: function (commands) {
-      commands.forEach(function (command) {
+      for (const command of commands) {
         this.commands.push(command)
-      }.bind(this))
+      }
       return this
     }
   },
@@ -90,9 +90,9 @@ Commandico.prototype = explicit({
     $args: [commands.meta('modifiers')],
     $assert: true,
     $: function (modifiers) {
-      modifiers.forEach(function (modifier) {
+      for (const modifier of modifiers) {
         this.modifiers.unshift(modifier)
-      }.bind(this))
+      }
       return this
     }
   },
@@ -103,8 +103,8 @@ Commandico.prototype = explicit({
       if (name === null || name === undefined) {
         return null
       }
-      var commands = this.commands.sort(orderSort)
-      for (var i = commands.length - 1; i >= 0; i--) {
+      const commands = this.commands.sort(orderSort)
+      for (let i = commands.length - 1; i >= 0; i--) {
         var command = commands[i]
         if (!itemFilter(this.scope, command)) {
           continue
@@ -120,21 +120,20 @@ Commandico.prototype = explicit({
     $args: [joi.array().meta('args').default([]).optional()],
     $assert: true,
     $: function (args) {
-      var mode = args[0]
-      var argv = require('minimist')(args)
-      var command = this.getCommand(mode) || this.getCommand(this.defaultCommand)
+      const mode = args[0]
+      const argv = require('minimist')(args)
+      const command = this.getCommand(mode) || this.getCommand(this.defaultCommand)
       this.modifiers
         .filter(itemFilter.bind(null, this.scope))
         .sort(orderSort)
-        .forEach(function (item) {
-          for (var i = 0; i < item.aliases.length; ++i) {
-            var alias = item.aliases[i]
-            var value = argv[alias]
+        .forEach(item => {
+          for (const alias of item.aliases) {
+            const value = argv[alias]
             if (value !== undefined && value !== null) {
               item.handler(this.scope, value, alias)
             }
           }
-        }.bind(this))
+        })
 
       if (!command) {
         throw new Error('default command not found')
