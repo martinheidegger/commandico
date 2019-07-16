@@ -1,7 +1,7 @@
 'use strict'
 
 var explicit = require('explicit')
-var joi = require('joi')
+var joi = require('@hapi/joi')
 
 var command = joi.object({
   order: joi.number().integer().default(0).optional(),
